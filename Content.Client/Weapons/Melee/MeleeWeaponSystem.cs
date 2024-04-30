@@ -46,11 +46,12 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        UpdateEffects(frameTime);
 
         if (!Timing.IsFirstTimePredicted)
             return;
 
-        var entityNull = _player.LocalPlayer?.ControlledEntity;
+        var entityNull = _player.LocalEntity;
 
         if (entityNull == null)
             return;
