@@ -1,4 +1,4 @@
 - type: emote
   id: Cum
-  category: Vocal
+  name: Cum
   chatMessages: [cums!]

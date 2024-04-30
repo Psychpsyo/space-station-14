@@ -7,8 +7,8 @@ using Content.Shared.Chemistry.Reagent;
 namespace Content.Server.Horny.Components;
 
 [RegisterComponent]
-[Access(typeof(CumSystem))]
-public sealed partial class CumComponent : Component
+[Access(typeof(GenitalsSystem))]
+public sealed partial class GenitalsComponent : Component
 {
     [DataField("cumAction", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
     public string CumAction = "ActionCum";
