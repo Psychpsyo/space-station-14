@@ -1,0 +1,47 @@
+
+- type: entity
+  parent: ClothingShoesBase
+  id: ClothingThighHighs
+  name: thigh-highs
+  description: Thigh-high socks, perfect for girls and femboys.
+  components:
+  - type: Sprite
+    sprite: Clothing/Horny/ThighHighs/white.rsi
+  - type: Clothing
+    sprite: Clothing/Horny/ThighHighs/white.rsi
+
+- type: entity
+  parent: ClothingThighHighs
+  id: ClothingThighHighsGray
+  components:
+  - type: Sprite
+    sprite: Clothing/Horny/ThighHighs/gray.rsi
+  - type: Clothing
+    sprite: Clothing/Horny/ThighHighs/gray.rsi
+
+- type: entity
+  parent: ClothingThighHighs
+  id: ClothingThighHighsBlack
+  components:
+  - type: Sprite
+    sprite: Clothing/Horny/ThighHighs/black.rsi
+  - type: Clothing
+    sprite: Clothing/Horny/ThighHighs/black.rsi
+
+- type: entity
+  parent: ClothingThighHighs
+  id: ClothingThighHighsBlueStriped
+  components:
+  - type: Sprite
+    sprite: Clothing/Horny/ThighHighs/blue_striped.rsi
+  - type: Clothing
+    sprite: Clothing/Horny/ThighHighs/blue_striped.rsi
+
+- type: entity
+  parent: ClothingThighHighs
+  id: ClothingThighHighsBlackStriped
+  components:
+  - type: Sprite
+    sprite: Clothing/Horny/ThighHighs/black_striped.rsi
+  - type: Clothing
+    sprite: Clothing/Horny/ThighHighs/black_striped.rsi

@@ -193,6 +193,21 @@
       - id: ClothingUnderSocksCoder
         prob: 0.03
         orGroup: dressermainloot
+      - id: ClothingThighHighs
+        prob: 0.01
+        orGroup: dressermainloot
+      - id: ClothingThighHighsGray
+        prob: 0.01
+        orGroup: dressermainloot
+      - id: ClothingThighHighsBlack
+        prob: 0.01
+        orGroup: dressermainloot
+      - id: ClothingThighHighsBlueStriped
+        prob: 0.01
+        orGroup: dressermainloot
+      - id: ClothingThighHighsBlackStriped
+        prob: 0.01
+        orGroup: dressermainloot
       - id: ClothingUnderSocksBee
         prob: 0.03
         orGroup: dresserthirdloot

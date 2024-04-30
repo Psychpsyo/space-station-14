@@ -218,6 +218,16 @@
         orGroup: GiftPool
       - id: ClothingUnderSocksCoder
         orGroup: GiftPool
+      - id: ClothingThighHighs
+        orGroup: GiftPool
+      - id: ClothingThighHighsGray
+        orGroup: GiftPool
+      - id: ClothingThighHighsBlack
+        orGroup: GiftPool
+      - id: ClothingThighHighsBlueStriped
+        orGroup: GiftPool
+      - id: ClothingThighHighsBlackStriped
+        orGroup: GiftPool
       - id: ClothingBeltUtilityFilled
         orGroup: GiftPool
       - id: WeaponFlareGun
