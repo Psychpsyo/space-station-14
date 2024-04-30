@@ -1,0 +1,27 @@
+- type: reagent
+  id: Cum
+  name: reagent-name-cum
+  group: Biological
+  desc: reagent-desc-cum
+  physicalDesc: reagent-physical-desc-strong-smelling
+  flavor: salty
+  color: "#FFFAE8"
+  recognizable: true
+  slippery: false
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 2
+  reactiveEffects:
+    Extinguish:
+      methods: [ Touch ]
+      effects:
+      - !type:ExtinguishReaction
+  plantMetabolism:
+    - !type:PlantAdjustWater
+      amount: 0.5
+  footstepSound:
+    collection: FootstepSticky
+    params:
+      volume: 6

@@ -301,6 +301,7 @@
         Asphyxiation: -1.0
   - type: FireVisuals
     alternateState: Standing
+  - type: Cum
 
 - type: entity
   save: false

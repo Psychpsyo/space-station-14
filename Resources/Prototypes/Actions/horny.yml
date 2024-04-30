@@ -1,0 +1,13 @@
+- type: entity
+  id: ActionCum
+  name: Cum
+  description: Action that makes you cum
+  noSpawn: true
+  components:
+  - type: InstantAction
+    useDelay: 120
+    icon:
+      sprite: Interface/Actions/horny.rsi
+      state: splurt
+    event: !type:CumActionEvent
+    checkCanInteract: false

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "license": "CC0",
+    "copyright": "Made by Psychpsyo.",
+    "states": [
+        {
+            "name": "splurt"
+        }
+    ]
+}

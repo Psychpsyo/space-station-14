@@ -76,6 +76,8 @@
       types:
         Asphyxiation: -1.0
     maxSaturation: 15
+  - type: Cum
+    cumReagent: Slime
 
 - type: entity
   parent: MobHumanDummy
