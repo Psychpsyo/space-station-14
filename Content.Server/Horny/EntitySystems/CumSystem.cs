@@ -51,7 +51,11 @@ public sealed class CumSystem : EntitySystem
         if (args.Handled)
             return;
 
-        args.Handled = TryCum(uid, component);
+        if (TryCum(uid, component))
+        {
+            _chat.TryEmoteWithChat(uid, "Cum");
+            args.Handled = true;
+        }
     }
 
     private bool TryCum(EntityUid uid, CumComponent component)
