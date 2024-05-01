@@ -5,6 +5,7 @@ using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Preferences;
+using Content.Shared.Horny.Components;
 using Robust.Shared.GameObjects.Components.Localization;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
@@ -341,6 +342,13 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         if (TryComp<GrammarComponent>(uid, out var grammar))
         {
             grammar.Gender = profile.Gender;
+        }
+
+
+        if (TryComp<GenitalsComponent>(uid, out var genitalsComp))
+        {
+            genitalsComp.Genitals = profile.Genitals;
+            genitalsComp.CumVolume = profile.CumVolume;
         }
 
         humanoid.Age = profile.Age;

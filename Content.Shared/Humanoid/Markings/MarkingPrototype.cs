@@ -1,3 +1,4 @@
+using Content.Shared.Horny;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -22,6 +23,9 @@ namespace Content.Shared.Humanoid.Markings
 
         [DataField("sexRestriction")]
         public Sex? SexRestriction { get; private set; }
+
+        [DataField("genitalRestriction")]
+        public Genitals? GenitalRestriction { get; private set; }
 
         [DataField("followSkinColor")]
         public bool FollowSkinColor { get; private set; } = false;

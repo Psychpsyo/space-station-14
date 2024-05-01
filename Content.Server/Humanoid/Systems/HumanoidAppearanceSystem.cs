@@ -1,8 +1,11 @@
+using Content.Server.Horny.EntitySystems;
+using Content.Shared.Horny;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
 using Content.Shared.Verbs;
+using Content.Shared.Horny.Components;
 using Robust.Shared.GameObjects.Components.Localization;
 
 namespace Content.Server.Humanoid;
@@ -10,6 +13,7 @@ namespace Content.Server.Humanoid;
 public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
 {
     [Dependency] private readonly MarkingManager _markingManager = default!;
+    [Dependency] private readonly GenitalsSystem _genitals = default!;
 
     public override void Initialize()
     {
@@ -49,6 +53,20 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         if (TryComp<GrammarComponent>(target, out var grammar))
         {
             grammar.Gender = sourceHumanoid.Gender;
+        }
+
+        if (TryComp<GenitalsComponent>(target, out var targetGenitals))
+        {
+            if (TryComp<GenitalsComponent>(source, out var sourceGenitals))
+            {
+                _genitals.SetGenitals(target, sourceGenitals.Genitals, false, targetGenitals);
+                targetGenitals.CumVolume = sourceGenitals.CumVolume;
+                targetGenitals.CumReagent = sourceGenitals.CumReagent;
+            } else
+            {
+                _genitals.SetGenitals(target, Genitals.Nothing, false, targetGenitals);
+                targetGenitals.CumVolume = 0;
+            }
         }
 
         Dirty(target, targetHumanoid);

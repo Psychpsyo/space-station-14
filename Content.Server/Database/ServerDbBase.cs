@@ -15,6 +15,7 @@ using Content.Shared.Humanoid.Markings;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Preferences.Loadouts.Effects;
+using Content.Shared.Horny;
 using Microsoft.EntityFrameworkCore;
 using Robust.Shared.Enums;
 using Robust.Shared.Network;
@@ -194,6 +195,10 @@ namespace Content.Server.Database
             if (Enum.TryParse<Gender>(profile.Gender, true, out var genderVal))
                 gender = genderVal;
 
+            var genitals = sex == Sex.Male ? Genitals.Penis : Genitals.Vagina;
+            if (Enum.TryParse<Genitals>(profile.Genitals, true, out var genitalsVal))
+                genitals = genitalsVal;
+
             // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
             var markingsRaw = profile.Markings?.Deserialize<List<string>>();
 
@@ -238,6 +243,8 @@ namespace Content.Server.Database
                 profile.Age,
                 sex,
                 gender,
+                genitals,
+                profile.CumVolume,
                 new HumanoidCharacterAppearance
                 (
                     profile.HairName,
@@ -274,6 +281,8 @@ namespace Content.Server.Database
             profile.Age = humanoid.Age;
             profile.Sex = humanoid.Sex.ToString();
             profile.Gender = humanoid.Gender.ToString();
+            profile.Genitals = humanoid.Genitals.ToString();
+            profile.CumVolume = humanoid.CumVolume;
             profile.HairName = appearance.HairStyleId;
             profile.HairColor = appearance.HairColor.ToHex();
             profile.FacialHairName = appearance.FacialHairStyleId;

@@ -1,4 +1,29 @@
 - type: emote
   id: Cum
-  name: Cum
-  chatMessages: [cums!]
+  name: chat-emote-name-cum
+  chatMessages: ["chat-emote-msg-cum"]
+
+- type: emote
+  id: Moan
+  name: chat-emote-name-moan
+  category: Vocal
+  whitelist:
+    components:
+    - Vocal
+  blacklist:
+    components:
+    - BorgChassis
+  chatMessages: ["chat-emote-msg-moan"]
+  chatTriggers:
+    - moan
+    - moan.
+    - moan!
+    - moans
+    - moans.
+    - moans!
+    - moaned
+    - moaned.
+    - moaned!
+    - moaning
+    - moaning.
+    - moaning!

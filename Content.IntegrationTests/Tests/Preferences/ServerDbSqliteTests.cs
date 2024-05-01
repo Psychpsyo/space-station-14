@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.Server.Database;
 using Content.Shared.GameTicking;
+using Content.Shared.Horny;
 using Content.Shared.Humanoid;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
@@ -46,6 +47,7 @@ namespace Content.IntegrationTests.Tests.Preferences
                 21,
                 Sex.Male,
                 Gender.Epicene,
+                Genitals.Penis,
                 new HumanoidCharacterAppearance(
                     "Afro",
                     Color.Aqua,

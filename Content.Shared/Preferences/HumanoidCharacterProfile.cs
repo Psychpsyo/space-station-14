@@ -8,6 +8,7 @@ using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Preferences.Loadouts.Effects;
 using Content.Shared.Roles;
 using Content.Shared.Traits;
+using Content.Shared.Horny;
 using Robust.Shared.Collections;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
@@ -45,6 +46,8 @@ namespace Content.Shared.Preferences
             int age,
             Sex sex,
             Gender gender,
+            Genitals genitals,
+            int cumVolume,
             HumanoidCharacterAppearance appearance,
             SpawnPriorityPreference spawnPriority,
             Dictionary<string, JobPriority> jobPriorities,
@@ -59,6 +62,8 @@ namespace Content.Shared.Preferences
             Age = age;
             Sex = sex;
             Gender = gender;
+            Genitals = genitals;
+            CumVolume = cumVolume;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
             _jobPriorities = jobPriorities;
@@ -75,7 +80,7 @@ namespace Content.Shared.Preferences
             List<string> antagPreferences,
             List<string> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
-            : this(other.Name, other.FlavorText, other.Species, other.Age, other.Sex, other.Gender, other.Appearance, other.SpawnPriority,
+            : this(other.Name, other.FlavorText, other.Species, other.Age, other.Sex, other.Gender, other.Genitals, other.CumVolume, other.Appearance, other.SpawnPriority,
                 jobPriorities, other.PreferenceUnavailable, antagPreferences, traitPreferences, loadouts)
         {
         }
@@ -93,6 +98,8 @@ namespace Content.Shared.Preferences
             int age,
             Sex sex,
             Gender gender,
+            Genitals genitals,
+            int cumVolume,
             HumanoidCharacterAppearance appearance,
             SpawnPriorityPreference spawnPriority,
             IReadOnlyDictionary<string, JobPriority> jobPriorities,
@@ -100,7 +107,7 @@ namespace Content.Shared.Preferences
             IReadOnlyList<string> antagPreferences,
             IReadOnlyList<string> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
-            : this(name, flavortext, species, age, sex, gender, appearance, spawnPriority, new Dictionary<string, JobPriority>(jobPriorities),
+            : this(name, flavortext, species, age, sex, gender, genitals, cumVolume, appearance, spawnPriority, new Dictionary<string, JobPriority>(jobPriorities),
                 preferenceUnavailable, new List<string>(antagPreferences), new List<string>(traitPreferences), new Dictionary<string, RoleLoadout>(loadouts))
         {
         }
@@ -117,6 +124,8 @@ namespace Content.Shared.Preferences
             18,
             Sex.Male,
             Gender.Male,
+            Genitals.Penis,
+            10,
             new HumanoidCharacterAppearance(),
             SpawnPriorityPreference.None,
             new Dictionary<string, JobPriority>
@@ -144,6 +153,8 @@ namespace Content.Shared.Preferences
                 18,
                 Sex.Male,
                 Gender.Male,
+                Genitals.Penis,
+                10,
                 HumanoidCharacterAppearance.DefaultWithSpecies(species),
                 SpawnPriorityPreference.None,
                 new Dictionary<string, JobPriority>
@@ -178,27 +189,32 @@ namespace Content.Shared.Preferences
 
             var sex = Sex.Unsexed;
             var age = 18;
+            var cumVolume = 10;
             if (prototypeManager.TryIndex<SpeciesPrototype>(species, out var speciesPrototype))
             {
                 sex = random.Pick(speciesPrototype.Sexes);
                 age = random.Next(speciesPrototype.MinAge, speciesPrototype.OldAge); // people don't look and keep making 119 year old characters with zero rp, cap it at middle aged
+                cumVolume = random.Next(5, 15);
             }
 
             var gender = Gender.Epicene;
+            var genitals = Genitals.Nothing;
 
             switch (sex)
             {
                 case Sex.Male:
                     gender = Gender.Male;
+                    genitals = Genitals.Penis;
                     break;
                 case Sex.Female:
                     gender = Gender.Female;
+                    genitals = Genitals.Vagina;
                     break;
             }
 
             var name = GetName(species, gender);
 
-            return new HumanoidCharacterProfile(name, "", species, age, sex, gender, HumanoidCharacterAppearance.Random(species, sex), SpawnPriorityPreference.None,
+            return new HumanoidCharacterProfile(name, "", species, age, sex, gender, genitals, cumVolume, HumanoidCharacterAppearance.Random(species, sex), SpawnPriorityPreference.None,
                 new Dictionary<string, JobPriority>
                 {
                     {SharedGameTicker.FallbackOverflowJob, JobPriority.High},
@@ -217,6 +233,12 @@ namespace Content.Shared.Preferences
 
         [DataField("gender")]
         public Gender Gender { get; private set; }
+
+        [DataField("genitals")]
+        public Genitals Genitals { get; private set; }
+
+        [DataField("cumVolume")]
+        public int CumVolume { get; private set; }
 
         public ICharacterAppearance CharacterAppearance => Appearance;
 
@@ -251,6 +273,16 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile WithGender(Gender gender)
         {
             return new(this) { Gender = gender };
+        }
+
+        public HumanoidCharacterProfile WithGenitals(Genitals genitals)
+        {
+            return new(this) { Genitals = genitals };
+        }
+
+        public HumanoidCharacterProfile WithCumVolume(int cumVolume)
+        {
+            return new(this) { CumVolume = cumVolume };
         }
 
         public HumanoidCharacterProfile WithSpecies(string species)
@@ -399,6 +431,16 @@ namespace Content.Shared.Preferences
                 _ => Gender.Epicene // Invalid enum values.
             };
 
+            var genitals = Genitals switch
+            {
+                Genitals.Penis => Genitals.Penis,
+                Genitals.Vagina => Genitals.Vagina,
+                Genitals.Nothing => Genitals.Nothing,
+                _ => Genitals.Nothing // Invalid enum values.
+            };
+
+            var cumVolume = Math.Clamp(Age, speciesPrototype.MinCumVolume, speciesPrototype.MaxCumVolume);
+
             string name;
             if (string.IsNullOrEmpty(Name))
             {
@@ -483,6 +525,7 @@ namespace Content.Shared.Preferences
             Age = age;
             Sex = sex;
             Gender = gender;
+            Genitals = genitals;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
 

@@ -1,10 +1,11 @@
 using Content.Server.Actions;
 using Content.Server.Chat.Systems;
-using Content.Server.Horny.Components;
+using Content.Shared.Horny.Components;
 using Content.Shared.Horny;
 using Content.Shared.Chemistry.Components;
 using Content.Server.Fluids.EntitySystems;
 using Content.Shared.Humanoid;
+using Content.Shared.Humanoid.Markings;
 
 namespace Content.Server.Horny.EntitySystems;
 
@@ -13,6 +14,7 @@ public sealed class GenitalsSystem : EntitySystem
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
+    [Dependency] private readonly MarkingManager _markingManager = default!;
 
     public override void Initialize()
     {
@@ -20,7 +22,7 @@ public sealed class GenitalsSystem : EntitySystem
 
         SubscribeLocalEvent<GenitalsComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<GenitalsComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<GenitalsComponent, SexChangedEvent>(OnSexChanged);
+        SubscribeLocalEvent<GenitalsComponent, GenitalsChangedEvent>(OnGenitalsChanged);
         SubscribeLocalEvent<GenitalsComponent, EmoteEvent>(OnEmote);
         SubscribeLocalEvent<GenitalsComponent, CumActionEvent>(OnCumAction);
     }
@@ -28,23 +30,23 @@ public sealed class GenitalsSystem : EntitySystem
     private void OnMapInit(EntityUid uid, GenitalsComponent component, MapInitEvent args)
     {
         // try to add cum action when genitals component is added
-        if (IsMale(uid))
+        if (component.Genitals == Genitals.Penis)
             _actions.AddAction(uid, ref component.CumActionEntity, component.CumAction);
     }
 
     private void OnShutdown(EntityUid uid, GenitalsComponent component, ComponentShutdown args)
     {
         // remove cum action when genitals component is removed
-        if (IsMale(uid))
+        if (component.Genitals == Genitals.Penis)
             _actions.RemoveAction(uid, component.CumActionEntity);
     }
 
-    private void OnSexChanged(EntityUid uid, GenitalsComponent component, SexChangedEvent args)
+    private void OnGenitalsChanged(EntityUid uid, GenitalsComponent component, GenitalsChangedEvent args)
     {
-        if (args.OldSex != Sex.Male && args.NewSex == Sex.Male)
+        if (args.OldGenitals != Genitals.Penis && args.NewGenitals == Genitals.Penis)
             _actions.AddAction(uid, ref component.CumActionEntity, component.CumAction);
 
-        if (args.OldSex == Sex.Male && args.NewSex != Sex.Male)
+        if (args.OldGenitals == Genitals.Penis && args.NewGenitals != Genitals.Penis)
             _actions.RemoveAction(uid, component.CumActionEntity);
     }
 
@@ -70,18 +72,28 @@ public sealed class GenitalsSystem : EntitySystem
 
     private bool TryCum(EntityUid uid, GenitalsComponent component)
     {
-        if (!IsMale(uid))
+        if (component.Genitals != Genitals.Penis)
             return false;
 
-        var cumSolution = new Solution(component.CumReagent, component.Amount);
+        var cumSolution = new Solution(component.CumReagent, component.CumVolume);
         var xform = Transform(uid);
         _puddle.TrySpillAt(xform.Coordinates, cumSolution, out _);
         return true;
     }
-
-    private bool IsMale(EntityUid uid)
+    public void SetGenitals(EntityUid uid, Genitals genitals, bool sync = true, GenitalsComponent? genitalsComp = null)
     {
-        Sex? sex = CompOrNull<HumanoidAppearanceComponent>(uid)?.Sex ?? Sex.Unsexed;
-        return sex == Sex.Male;
+        if (!Resolve(uid, ref genitalsComp) || genitalsComp.Genitals == genitals)
+            return;
+
+        var oldGenitals = genitalsComp.Genitals;
+        genitalsComp.Genitals = genitals;
+        if (TryComp<HumanoidAppearanceComponent>(uid, out var humanoid))
+            humanoid.MarkingSet.EnsureGenitals(genitals, _markingManager);
+        RaiseLocalEvent(uid, new GenitalsChangedEvent(oldGenitals, genitals));
+
+        if (sync)
+        {
+            Dirty(uid, genitalsComp);
+        }
     }
 }

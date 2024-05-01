@@ -1,0 +1,32 @@
+- type: marking
+  id: HumanPenis
+  bodyPart: Genitals
+  markingCategory: Genitals
+  followSkinColor: true
+  forcedColoring: true
+  genitalRestriction: Penis
+  sprites:
+  - sprite: Mobs/Customization/Horny/genitals_human.rsi
+    state: penis
+
+- type: marking
+  id: HumanPenisLarge
+  bodyPart: Genitals
+  markingCategory: Genitals
+  followSkinColor: true
+  forcedColoring: true
+  genitalRestriction: Penis
+  sprites:
+  - sprite: Mobs/Customization/Horny/genitals_human.rsi
+    state: penisLarge
+
+- type: marking
+  id: HumanVagina
+  bodyPart: Genitals
+  markingCategory: Genitals
+  followSkinColor: true
+  forcedColoring: true
+  genitalRestriction: Vagina
+  sprites:
+  - sprite: Mobs/Customization/Horny/genitals_human.rsi
+    state: vagina

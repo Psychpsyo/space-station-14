@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared.Horny;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
@@ -36,6 +37,7 @@ public sealed partial class MarkingPicker : Control
 
     private string _currentSpecies = SharedHumanoidAppearanceSystem.DefaultSpecies;
     private Sex _currentSex = Sex.Unsexed;
+    private Genitals _currentGenitals = Genitals.Nothing;
     public Color CurrentSkinColor = Color.White;
     public Color CurrentEyeColor = Color.Black;
     public Marking? HairMarking;
@@ -345,6 +347,7 @@ public sealed partial class MarkingPicker : Control
         _currentMarkings = new(markingList, speciesPrototype.MarkingPoints, _markingManager, _prototypeManager);
         _currentMarkings.EnsureSpecies(species, null, _markingManager);
         _currentMarkings.EnsureSexes(_currentSex, _markingManager);
+        _currentMarkings.EnsureGenitals(_currentGenitals, _markingManager);
 
         Populate(CMarkingSearch.Text);
         PopulateUsed();
@@ -360,6 +363,21 @@ public sealed partial class MarkingPicker : Control
         _currentMarkings = new(markingList, speciesPrototype.MarkingPoints, _markingManager, _prototypeManager);
         _currentMarkings.EnsureSpecies(_currentSpecies, null, _markingManager);
         _currentMarkings.EnsureSexes(_currentSex, _markingManager);
+
+        Populate(CMarkingSearch.Text);
+        PopulateUsed();
+    }
+
+    public void SetGenitals(Genitals genitals)
+    {
+        _currentGenitals = genitals;
+        var markingList = _currentMarkings.GetForwardEnumerator().ToList();
+
+        var speciesPrototype = _prototypeManager.Index<SpeciesPrototype>(_currentSpecies);
+
+        _currentMarkings = new(markingList, speciesPrototype.MarkingPoints, _markingManager, _prototypeManager);
+        _currentMarkings.EnsureSpecies(_currentSpecies, null, _markingManager);
+        _currentMarkings.EnsureGenitals(_currentGenitals, _markingManager);
 
         Populate(CMarkingSearch.Text);
         PopulateUsed();

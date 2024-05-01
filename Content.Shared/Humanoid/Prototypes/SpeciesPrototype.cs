@@ -97,6 +97,18 @@ public sealed partial class SpeciesPrototype : IPrototype
     public List<Sex> Sexes { get; private set; } = new() { Sex.Male, Sex.Female };
 
     /// <summary>
+    ///     The lowest possible amount of randomly picked cum volume
+    /// </summary>
+    [DataField]
+    public int MinCumVolume = 1;
+
+    /// <summary>
+    ///     The highest possible amount of randomly picked cum volume
+    /// </summary>
+    [DataField]
+    public int MaxCumVolume = 1000;
+
+    /// <summary>
     ///     Characters younger than this are too young to be hired by Nanotrasen.
     /// </summary>
     [DataField]

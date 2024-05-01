@@ -11,6 +11,7 @@ using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
+using Content.Shared.Horny;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
@@ -50,6 +51,8 @@ namespace Content.Client.Preferences.UI
         private Button _saveButton => CSaveButton;
         private OptionButton _sexButton => CSexButton;
         private OptionButton _genderButton => CPronounsButton;
+        private OptionButton _genitalsButton => CGenitalsButton;
+        private LineEdit _cumVolumeEdit => CCumVolumeEdit;
         private Slider _skinColor => CSkin;
         private OptionButton _spawnPriorityButton => CSpawnPriorityButton;
         private SingleMarkingPicker _hairPicker => CHairStylePicker;
@@ -146,6 +149,31 @@ namespace Content.Client.Preferences.UI
             };
 
             #endregion Gender
+
+            #region Genitals
+
+            _genitalsButton.AddItem(Loc.GetString($"humanoid-profile-editor-genitals-penis-text"), (int) Genitals.Penis);
+            _genitalsButton.AddItem(Loc.GetString($"humanoid-profile-editor-genitals-vagina-text"), (int) Genitals.Vagina);
+            _genitalsButton.AddItem(Loc.GetString($"humanoid-profile-editor-genitals-nothing-text"), (int) Genitals.Nothing);
+
+            _genitalsButton.OnItemSelected += args =>
+            {
+                _genitalsButton.SelectId(args.Id);
+                SetGenitals((Genitals) args.Id);
+            };
+
+            #endregion Genitals
+
+            #region Cum Volume
+
+            _cumVolumeEdit.OnTextChanged += args =>
+            {
+                if (!int.TryParse(args.Text, out var newCumVolume))
+                    return;
+                SetCumVolume(newCumVolume);
+            };
+
+            #endregion Cum Volume
 
             #region Species
 
@@ -761,15 +789,19 @@ namespace Content.Client.Preferences.UI
             {
                 case Sex.Male:
                     Profile = Profile?.WithGender(Gender.Male);
+                    Profile = Profile?.WithGenitals(Genitals.Penis);
                     break;
                 case Sex.Female:
                     Profile = Profile?.WithGender(Gender.Female);
+                    Profile = Profile?.WithGenitals(Genitals.Vagina);
                     break;
                 default:
                     Profile = Profile?.WithGender(Gender.Epicene);
+                    Profile = Profile?.WithGenitals(Genitals.Nothing);
                     break;
             }
             UpdateGenderControls();
+            UpdateGenitalControls();
             CMarkings.SetSex(newSex);
             SetDirty();
         }
@@ -777,6 +809,18 @@ namespace Content.Client.Preferences.UI
         private void SetGender(Gender newGender)
         {
             Profile = Profile?.WithGender(newGender);
+            SetDirty();
+        }
+
+        private void SetGenitals(Genitals newGenitals)
+        {
+            Profile = Profile?.WithGenitals(newGenitals);
+            SetDirty();
+        }
+
+        private void SetCumVolume(int newCumVolume)
+        {
+            Profile = Profile?.WithCumVolume(newCumVolume);
             SetDirty();
         }
 
@@ -989,6 +1033,21 @@ namespace Content.Client.Preferences.UI
             _genderButton.SelectId((int) Profile.Gender);
         }
 
+        private void UpdateGenitalControls()
+        {
+            if (Profile == null)
+            {
+                return;
+            }
+
+            _genitalsButton.SelectId((int) Profile.Genitals);
+        }
+
+        private void UpdateCumVolumeEdit()
+        {
+            _cumVolumeEdit.Text = Profile?.CumVolume.ToString() ?? "";
+        }
+
         private void UpdateSpawnPriorityControls()
         {
             if (Profile == null)
@@ -1134,6 +1193,7 @@ namespace Content.Client.Preferences.UI
             UpdateFlavorTextEdit();
             UpdateSexControls();
             UpdateGenderControls();
+            UpdateGenitalControls();
             UpdateSkinColor();
             UpdateSpecies();
             UpdateSpawnPriorityControls();

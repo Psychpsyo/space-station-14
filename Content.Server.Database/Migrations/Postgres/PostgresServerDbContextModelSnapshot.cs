@@ -740,6 +740,10 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("text")
                         .HasColumnName("char_name");
 
+                    b.Property<int>("CumVolume")
+                        .HasColumnType("integer")
+                        .HasColumnName("cum_volume");
+
                     b.Property<string>("EyeColor")
                         .IsRequired()
                         .HasColumnType("text")
@@ -764,6 +768,11 @@ namespace Content.Server.Database.Migrations.Postgres
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("gender");
+
+                    b.Property<string>("Genitals")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("genitals");
 
                     b.Property<string>("HairColor")
                         .IsRequired()

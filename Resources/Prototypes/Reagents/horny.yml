@@ -25,3 +25,31 @@
     collection: FootstepSticky
     params:
       volume: 6
+
+- type: reagent
+  id: Piss
+  name: reagent-name-piss
+  group: Biological
+  desc: reagent-desc-piss
+  physicalDesc: reagent-physical-desc-strong-smelling
+  flavor: salty
+  color: "#FFFF97"
+  recognizable: true
+  slippery: false
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 1
+  reactiveEffects:
+    Extinguish:
+      methods: [ Touch ]
+      effects:
+      - !type:ExtinguishReaction
+  plantMetabolism:
+    - !type:PlantAdjustWater
+      amount: 1
+  footstepSound:
+    collection: FootstepSticky
+    params:
+      volume: 6

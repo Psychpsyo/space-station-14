@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "size": {
+      "x": 32,
+      "y": 32
+    },
+    "copyright": "Made by Psychpsyo",
+    "license": "CC0",
+    "states": [
+      {
+        "name": "penis",
+        "directions": 4
+      },
+      {
+        "name": "penisLarge",
+        "directions": 4
+      },
+      {
+        "name": "vagina",
+        "directions": 4
+      }
+    ]
+  }

@@ -56,6 +56,7 @@
     hideLayersOnEquip:
     - Hair
     - Snout
+    - Genitals
 
 - type: entity
   parent: BaseSpeciesDummy
